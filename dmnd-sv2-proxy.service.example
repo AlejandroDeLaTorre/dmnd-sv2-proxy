@@ -1,0 +1,19 @@
+[Unit]
+Description=DMND SV2 proxy for the SV2 UI
+After=network-online.target
+
+[Service]
+WorkingDirectory=%h/dmnd-sv2-proxy
+# File with one line: TOKEN=<your DMND token>  (chmod 600)
+EnvironmentFile=%h/.config/dmnd.env
+# GATEWAY = docker network inspect sv2-network -f '{{(index .IPAM.Config 0).Gateway}}'
+Environment=LISTEN=GATEWAY:20000
+Environment=UPSTREAM=mining.dmnd.work:20000
+Environment=RUST_LOG=info
+ExecStart=%h/dmnd-sv2-proxy/target/release/dmnd-sv2-proxy
+# The sv2-network gateway only exists once Docker has created the network, so keep retrying.
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target

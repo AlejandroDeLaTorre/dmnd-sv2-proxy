@@ -1,0 +1,8 @@
+/target
+*.log
+*.json
+*.key
+.env
+dmnd.env
+# machine-specific copy; the repo ships dmnd-sv2-proxy.service.example
+/dmnd-sv2-proxy.service
